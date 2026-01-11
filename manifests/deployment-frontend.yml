@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        env: 
+        - name: ENVIRONMENT
+          value: "test"
+        image: example-frontend:1.0
+        ports:
+        - containerPort: 80
+        
+        resources:
+          requests:
+            memory: '100Mi'
+            cpu: '250m'
+          limits:
+            memory: '200Mi'
+            cpu: '500m'
+        imagePullPolicy: IfNotPresent
+  revisionHistoryLimit: 5
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1

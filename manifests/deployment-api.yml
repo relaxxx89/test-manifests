@@ -14,16 +14,47 @@ spec:
       labels:
         app: api
     spec:
+      
+      volumes:
+      - name: config-volume
+        configMap:
+          name: example-config
+          items:
+          - key: testttenv.file
+            path: testttenv.file
+      
       containers:
       - name: api
-        env: 
+        
+        env:
         - name: ENVIRONMENT
           value: "test"
-        image: example-api:3.0
+        - name: USER
+          valueFrom:
+            secretKeyRef:
+              name: api-secret
+              key: USER
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: api-secret
+              key: PASSWORD
+
+
+        envFrom:
+          - configMapRef:
+              name: example-config
+
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config/
+
+        image: example-api:4.0
         ports:
         - containerPort: 5000
+        
         livenessProbe:
-          httpGet: 
+          httpGet:
             path: /health
             port: 5000
           initialDelaySeconds: 15
@@ -59,8 +90,8 @@ spec:
           limits:
             memory: '200Mi'
             cpu: '500m'
+        
         imagePullPolicy: IfNotPresent
-      restartPolicy: "Always"
   revisionHistoryLimit: 5
 
   strategy:

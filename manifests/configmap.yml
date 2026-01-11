@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-config
+data:
+  log_level: INFO
+  testttenv.file: | # for mounting as a file
+    var1=value1
+    var2=value2
