@@ -19,7 +19,7 @@ spec:
         env: 
         - name: ENVIRONMENT
           value: "test"
-        image: example-frontend:1.0
+        image: example-frontend:4.0
         ports:
         - containerPort: 80
         

@@ -11,5 +11,5 @@ spec:
     app: api
   ports:
     - name: http
-      port: 5000        # порт сервиса
-      targetPort: 5000 # порт контейнера (или имя порта)
+      port: 5000
+      targetPort: 5000
